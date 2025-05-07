@@ -12,14 +12,14 @@ from launch_ros.actions import SetRemap
 
 
 def generate_launch_description():
-    pkg_capra_action_mapper = get_package_share_directory("capra_action_mapper")
+    pkg_capra_action_mapper = get_package_share_directory("capra_actions_mapper")
 
     actions_config_path = os.path.join(
         pkg_capra_action_mapper, "config", "config.yaml"
     )
 
     mapper_node = Node(
-        package="capra_action_mapper",
+        package="capra_actions_mapper",
         executable="mapper",
         name="actions_mapper",
         output="screen",

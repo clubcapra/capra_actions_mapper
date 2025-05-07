@@ -16,6 +16,11 @@ find_package(capra_control_msgs REQUIRED)
 add_executable(mapper src/mapper_node.cpp)
 ament_target_dependencies(mapper rclcpp std_msgs capra_control_msgs geometry_msgs sensor_msgs)
 
+install(TARGETS
+  mapper
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 # Install launch files
 install(DIRECTORY
   launch

@@ -67,8 +67,8 @@ public:
         // Create publishers
         enablePub_ = this->create_publisher<Bool>("enable", 1);
         estopPub_ = this->create_publisher<Bool>("estop", 1);
-        flippersPub_ = this->create_publisher<Flippers>("flippers", 1);
-        tracksPub_ = this->create_publisher<Tracks>("tracks", 1);
+        flippersPub_ = this->create_publisher<Flippers>("flippers_cmd", 1);
+        tracksPub_ = this->create_publisher<Tracks>("tracks_cmd", 1);
     }
 
 private:
