@@ -1,0 +1,3 @@
+actions_mapper:
+  ros__parameters:
+    wheel_separation: 0.175
