@@ -24,6 +24,10 @@ def generate_launch_description():
         name="actions_mapper",
         output="screen",
         parameters=[actions_config_path],
+        remappings=[
+            ("flippers", "flippers_cmd"),
+            ("tracks", "tracks_cmd"),
+        ]
     )
 
     return LaunchDescription(

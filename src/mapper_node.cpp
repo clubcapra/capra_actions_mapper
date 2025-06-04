@@ -94,8 +94,8 @@ private:
 
         if (joy->buttons[JoyButtons::LB]) flippers.front_left = flipperSpeed;
         if (joy->buttons[JoyButtons::RB]) flippers.front_right = flipperSpeed;
-        if (joy->axes[JoyAxes::LT] >= 0.5) flippers.rear_left = flipperSpeed;
-        if (joy->axes[JoyAxes::RT] >= 0.5) flippers.rear_right = flipperSpeed;
+        if (joy->axes[JoyAxes::LT] < 0) flippers.rear_left = flipperSpeed;
+        if (joy->axes[JoyAxes::RT] < 0) flippers.rear_right = flipperSpeed;
 
         auto enableMsg = Bool();
         enableMsg.data = enable_;
