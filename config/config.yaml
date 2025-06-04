@@ -1,3 +1,4 @@
 actions_mapper:
   ros__parameters:
     wheel_separation: 0.175
+    turn_multiplier: 10.0

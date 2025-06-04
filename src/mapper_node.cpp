@@ -57,6 +57,7 @@ public:
     {
         // Declare parameters
         spacing_ = this->declare_parameter("wheel_separation", 0.175);
+        turnMultiplier_ = this->declare_parameter("turn_multiplier", 10.0);
 
         // Create subcriptions
         cmdVelSub_ = this->create_subscription<Twist>(
@@ -75,8 +76,8 @@ private:
     void cmd_vel_cb(Twist::SharedPtr cmd_vel)
     {
         auto tracksMsg = Tracks();
-        tracksMsg.left  = cmd_vel->linear.x - (cmd_vel->angular.z * spacing_ / 2);
-        tracksMsg.right = cmd_vel->linear.x + (cmd_vel->angular.z * spacing_ / 2);
+        tracksMsg.left  = cmd_vel->linear.x - (turnMultiplier_ * cmd_vel->angular.z * spacing_ / 2);
+        tracksMsg.right = cmd_vel->linear.x + (turnMultiplier_ * cmd_vel->angular.z * spacing_ / 2);
 
         tracksPub_->publish(tracksMsg);
     }
@@ -110,6 +111,7 @@ private:
     bool enable_;
     bool estop_;
     float spacing_;
+    float turnMultiplier_;
 
     rclcpp::TimerBase::SharedPtr timer_;
 
