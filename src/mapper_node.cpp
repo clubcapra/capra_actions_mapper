@@ -92,10 +92,16 @@ private:
 
         auto flippers = Flippers();
 
-        if (joy->buttons[JoyButtons::LB]) flippers.front_left = flipperSpeed;
-        if (joy->buttons[JoyButtons::RB]) flippers.front_right = flipperSpeed;
-        if (joy->axes[JoyAxes::LT] < 0) flippers.rear_left = flipperSpeed;
-        if (joy->axes[JoyAxes::RT] < 0) flippers.rear_right = flipperSpeed;
+        bool front_left_selected = joy->buttons[JoyButtons::LB];
+        bool front_right_selected = joy->buttons[JoyButtons::RB];
+        bool rear_left_selected = joy->axes[JoyAxes::LT] < 0;
+        bool rear_right_selected = joy->axes[JoyAxes::RT] < 0;
+        bool all_selected = !(front_left_selected || front_right_selected || rear_left_selected || rear_right_selected);
+
+        if (front_left_selected || all_selected) flippers.front_left = flipperSpeed;
+        if (front_right_selected || all_selected) flippers.front_right = flipperSpeed;
+        if (rear_left_selected || all_selected) flippers.rear_left = flipperSpeed;
+        if (rear_right_selected || all_selected) flippers.rear_right = flipperSpeed;
 
         auto enableMsg = Bool();
         enableMsg.data = enable_;
