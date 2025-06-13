@@ -25,8 +25,8 @@ def generate_launch_description():
         output="screen",
         parameters=[actions_config_path],
         remappings=[
-            ("flippers", "flippers_cmd"),
-            ("tracks", "tracks_cmd"),
+            ("/joy", "/rove/joy"),
+            ("/cmd_vel", "/rove/cmd_vel"),
             # ("estop", "estop_controller"),
         ]
     )
