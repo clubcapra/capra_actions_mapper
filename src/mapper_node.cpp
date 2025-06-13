@@ -19,16 +19,16 @@ enum JoyButtons {
     // Buttons
     A = 0,
     B = 1,
-    X = 3,
-    Y = 4,
-    LB = 6,
-    RB = 7,
-    VIEW = 10,
-    MENU = 11,
-    XBOX = 12,
-    LS = 13,
-    RS = 14,
-    SHARE = 15,
+    X = 2,
+    Y = 3,
+    LB = 4,
+    RB = 5,
+    VIEW = 6,
+    MENU = 7,
+    XBOX = 8,
+    LS = 9,
+    RS = 10,
+    SHARE = 11,
 };
 
 enum JoyAxes {
