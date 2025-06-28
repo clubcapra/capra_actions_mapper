@@ -129,10 +129,11 @@ private:
         //     RCLCPP_ERROR_THROTTLE(get_logger(), *get_clock(), 1000, "Estop service not ready");
         // }
         auto future = estopClient_->async_send_request(estopReq);
-        if (rclcpp::FutureReturnCode::TIMEOUT ==
-            rclcpp::spin_until_future_complete(this->shared_from_this(), future, 10ms))
+        if (std::future_status::timeout ==
+            future.wait_for(10ms))
         {
             estopClient_->remove_pending_request(future);
+            
             // handle timeout
         } else {
             future.get();
