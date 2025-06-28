@@ -74,7 +74,7 @@ public:
         tracksPub_ = this->create_publisher<Tracks>("tracks_cmd", 1);
 
         // Create services
-        estopClient_ = this->create_client<SetBool>("set_estop");
+        estopClient_ = this->create_client<SetBool>("/Roboguard/set_estop");
     }
 
 private:
