@@ -9,6 +9,7 @@
 #include "sensor_msgs/msg/joy.hpp"
 #include "capra_control_msgs/msg/flippers.hpp"
 #include "capra_control_msgs/msg/tracks.hpp"
+#include "std_srvs/srv/set_bool.hpp"
 
 using namespace std::chrono_literals;
 
@@ -51,6 +52,7 @@ public:
     using Bool = std_msgs::msg::Bool;
     using Flippers = capra_control_msgs::msg::Flippers;
     using Tracks = capra_control_msgs::msg::Tracks;
+    using SetBool = std_srvs::srv::SetBool;
 
     MapperNode()
         : Node("actions_mapper")
@@ -70,6 +72,9 @@ public:
         estopPub_ = this->create_publisher<Bool>("estop", 1);
         flippersPub_ = this->create_publisher<Flippers>("flippers_cmd", 1);
         tracksPub_ = this->create_publisher<Tracks>("tracks_cmd", 1);
+
+        // Create services
+        estopClient_ = this->create_client<SetBool>("set_estop");
     }
 
 private:
@@ -109,6 +114,21 @@ private:
 
         auto estopMsg = Bool();
         estopMsg.data = estop_;
+        if (estopClient_->service_is_ready())
+        {
+            auto estopReq = std::make_shared<SetBool::Request>();
+            estopReq->data = estop_;
+            auto future = estopClient_->async_send_request(
+                estopReq,
+                [](rclcpp::Client<SetBool>::SharedFuture) {
+                    // empty callback to clean up future when it completes
+            });
+        }
+        else
+        {
+            RCLCPP_ERROR_THROTTLE(get_logger(), *get_clock(), 1000, "Estop service not ready");
+        }
+        
         estopPub_->publish(estopMsg);
 
         flippersPub_->publish(flippers);
@@ -128,6 +148,8 @@ private:
     rclcpp::Publisher<Bool>::SharedPtr estopPub_;
     rclcpp::Publisher<Flippers>::SharedPtr flippersPub_;
     rclcpp::Publisher<Tracks>::SharedPtr tracksPub_;
+
+    rclcpp::Client<SetBool>::SharedPtr estopClient_;
 };
 
 int main(int argc, char *argv[])

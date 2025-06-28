@@ -9,12 +9,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(capra_control_msgs REQUIRED)
 
 add_executable(mapper src/mapper_node.cpp)
-ament_target_dependencies(mapper rclcpp std_msgs capra_control_msgs geometry_msgs sensor_msgs)
+ament_target_dependencies(mapper rclcpp std_msgs std_srvs capra_control_msgs geometry_msgs sensor_msgs)
 
 install(TARGETS
   mapper
