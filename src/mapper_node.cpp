@@ -116,28 +116,11 @@ private:
         estopMsg.data = estop_;
         auto estopReq = std::make_shared<SetBool::Request>();
         estopReq->data = estop_;
-        // if (estopClient_->service_is_ready())
-        // {
-            // auto future = estopClient_->async_send_request(
-            //     estopReq,
-            //     [](rclcpp::Client<SetBool>::SharedFuture) {
-            //         // empty callback to clean up future when it completes
-            // });
-        // }
-        // else
-        // {
-        //     RCLCPP_ERROR_THROTTLE(get_logger(), *get_clock(), 1000, "Estop service not ready");
-        // }
-        auto future = estopClient_->async_send_request(estopReq);
-        if (std::future_status::timeout ==
-            future.wait_for(10ms))
-        {
-            estopClient_->remove_pending_request(future);
-            
-            // handle timeout
-        } else {
-            future.get();
-        }
+        auto future = estopClient_->async_send_request(
+            estopReq,
+            [](rclcpp::Client<SetBool>::SharedFuture) {
+                // empty callback to clean up future when it completes
+        });
         
         estopPub_->publish(estopMsg);
 
