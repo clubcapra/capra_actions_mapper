@@ -74,7 +74,7 @@ public:
         tracksPub_ = this->create_publisher<Tracks>("tracks_cmd", 1);
 
         // Create services
-        estopClient_ = this->create_client<SetBool>("/Roboguard/set_estop");
+        estopClient_ = this->create_client<SetBool>("/RoboGuard/set_estop");
     }
 
 private:
@@ -114,19 +114,28 @@ private:
 
         auto estopMsg = Bool();
         estopMsg.data = estop_;
-        if (estopClient_->service_is_ready())
+        auto estopReq = std::make_shared<SetBool::Request>();
+        estopReq->data = estop_;
+        // if (estopClient_->service_is_ready())
+        // {
+            // auto future = estopClient_->async_send_request(
+            //     estopReq,
+            //     [](rclcpp::Client<SetBool>::SharedFuture) {
+            //         // empty callback to clean up future when it completes
+            // });
+        // }
+        // else
+        // {
+        //     RCLCPP_ERROR_THROTTLE(get_logger(), *get_clock(), 1000, "Estop service not ready");
+        // }
+        auto future = estopClient_->async_send_request(estopReq);
+        if (rclcpp::FutureReturnCode::TIMEOUT ==
+            rclcpp::spin_until_future_complete(this->shared_from_this(), future, 10ms))
         {
-            auto estopReq = std::make_shared<SetBool::Request>();
-            estopReq->data = estop_;
-            auto future = estopClient_->async_send_request(
-                estopReq,
-                [](rclcpp::Client<SetBool>::SharedFuture) {
-                    // empty callback to clean up future when it completes
-            });
-        }
-        else
-        {
-            RCLCPP_ERROR_THROTTLE(get_logger(), *get_clock(), 1000, "Estop service not ready");
+            estopClient_->remove_pending_request(future);
+            // handle timeout
+        } else {
+            future.get();
         }
         
         estopPub_->publish(estopMsg);
