@@ -15,32 +15,33 @@ using namespace std::chrono_literals;
 /* This example creates a subclass of Node and uses std::bind() to register a
  * member function as a callback from the timer. */
 
+// THESE ARE USB BINDINGS THIS WILL NO LONGER WORK WITH LOCAL ROBOGUARD JOY
+// Buttons
 enum JoyButtons {
-    // Buttons
     A = 0,
     B = 1,
     X = 2,
     Y = 3,
     LB = 4,
     RB = 5,
-    VIEW = 6,
-    MENU = 7,
+    VIEW = 6, // (left button)
+    MENU = 7, // (right button)
     XBOX = 8,
     LS = 9,
     RS = 10,
     SHARE = 11,
 };
 
+// Axes
 enum JoyAxes {
-    // Axes
-    LS_X = 0,
-    LS_Y = 1,
-    LT = 5,
-    RS_X = 2,
-    RS_Y = 3,
-    RT = 4,
-    D_PAD_X = 6,
-    D_PAD_Y = 7,
+    LS_X = 0,       // [1;-1] (left is 1)
+    LS_Y = 1,       // [-1;1] (up is 1)
+    LT = 2,         // [1;-1] (off is 1, full is -1)
+    RS_X = 3,       // [1;-1] (left is 1)
+    RS_Y = 4,       // [-1;1] (up is 1)
+    RT = 5,         // [1;-1] (off is 1, full is -1)
+    D_PAD_X = 6,    // [1;-1] (left is 1)
+    D_PAD_Y = 7,    // [-1;1] (up is 1)
 };
 
 class MapperNode : public rclcpp::Node
